@@ -95,5 +95,5 @@ RUN set -eux; \
 
 # Setting up user and permissions
 RUN usermod -u 1000 www-data
+RUN chown -R www-data:www-data /app
 USER www-data
-RUN chown -R www-data:www-data /app/var
