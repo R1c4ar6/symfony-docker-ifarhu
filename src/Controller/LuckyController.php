@@ -7,12 +7,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class LuckyController extends AbstractController
 {
-    #[Route('/lucky/number')]
+    #[Route('/main/lucky')]
     public function number(): Response
     {
         $number = random_int(0, 100);
 
-        return $this->render('lucky/number.html.twig', [
+        return $this->render('main/lucky.html.twig', [
             'number' => $number,
         ]);
     }
