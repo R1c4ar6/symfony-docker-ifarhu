@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class LuckyController extends AbstractController
 {
     #[Route('/main/lucky')]
-    public function number(): Response
+    public function getLuckyNumber(): Response
     {
         $number = random_int(0, 100);
 

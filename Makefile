@@ -1,4 +1,4 @@
-DOCKER_USERNAME=www-data
+# DOCKER_USERNAME=www-data
 
 .PHONY: build
 build:
@@ -15,7 +15,7 @@ down:
 
 .PHONY: bash
 bash:
-	docker compose exec --user $(DOCKER_USERNAME) php bash
+	docker compose exec php bash
 
 .PHONY: install
 install:
