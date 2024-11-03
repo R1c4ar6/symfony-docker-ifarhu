@@ -35,6 +35,36 @@ class Student
         $this->documents = new ArrayCollection();
     }
 
+    public function insertStudent($name, $lastName, $identification): void
+    {
+        $this->identificationNumber = $identification;
+        $this->firstName = $name;
+        $this->lastName = $lastName;
+    }
+
+    public function updateStudent($name, $lastName, $identification): void
+    {
+        $this->identificationNumber = $identification;
+        $this->firstName = $name;
+        $this->lastName = $lastName;
+    }
+
+    public function deleteStudent(): void
+    {
+        $this->identificationNumber = null;
+        $this->firstName = null;
+        $this->lastName = null;
+    }
+
+    public function getStudents(): array
+    {
+        return [
+            $this->identificationNumber,
+            $this->firstName,
+            $this->lastName,
+        ];
+    }
+
     public function getId(): ?int
     {
         return $this->id;
