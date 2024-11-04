@@ -56,15 +56,6 @@ class Student
         $this->lastName = null;
     }
 
-    public function getStudents(): array
-    {
-        return [
-            $this->identificationNumber,
-            $this->firstName,
-            $this->lastName,
-        ];
-    }
-
     public function getId(): ?int
     {
         return $this->id;

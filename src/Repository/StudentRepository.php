@@ -16,6 +16,11 @@ class StudentRepository extends ServiceEntityRepository
         parent::__construct($registry, Student::class);
     }
 
+    public function findAllStudents(): array
+    {
+        return $this->findAll();
+    }
+
     //    /**
     //     * @return Student[] Returns an array of Student objects
     //     */
