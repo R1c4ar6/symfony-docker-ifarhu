@@ -17,9 +17,8 @@ class Document
     #[ORM\JoinColumn(nullable: false)]
     private ?Student $student = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Student $studentNumber = null;
+    #[ORM\Column(length: 32)]
+    private ?string $studentNumber = null;
 
     #[ORM\Column(length: 255)]
     private ?string $pdfPath = null;
@@ -41,12 +40,12 @@ class Document
         return $this;
     }
 
-    public function getStudentNumber(): ?Student
+    public function getStudentNumber(): ?string
     {
         return $this->studentNumber;
     }
 
-    public function setStudentNumber(?Student $studentNumber): static
+    public function setStudentNumber(string $studentNumber): static
     {
         $this->studentNumber = $studentNumber;
 
