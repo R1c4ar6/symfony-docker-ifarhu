@@ -16,6 +16,16 @@ class DocumentRepository extends ServiceEntityRepository
         parent::__construct($registry, Document::class);
     }
 
+    public function findByStudent($student): array
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.student = :student')
+            ->setParameter('student', $student)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return Document[] Returns an array of Document objects
 //     */

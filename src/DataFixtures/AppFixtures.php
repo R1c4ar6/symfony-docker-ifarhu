@@ -11,6 +11,7 @@ use Faker\Factory;
 
 class AppFixtures extends Fixture
 {
+    //command to load fake data: php bin/console doctrine:fixtures:load 
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create();

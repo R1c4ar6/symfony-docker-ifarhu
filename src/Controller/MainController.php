@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Student;
@@ -13,9 +13,10 @@ class MainController extends AbstractController
     public function index(StudentRepository $studentRepository): Response
     {
         $studentList = $studentRepository->findAllStudents();
+
         return $this->render('main/index.html.twig', [
             'controller_name' => 'StudentsController',
-            'students' => $studentList
+            'students' => $studentList,
         ]);
     }
 }

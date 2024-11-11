@@ -26,19 +26,19 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th scope="col">#</th>
 					<th scope="col">Nombre</th>
 					<th scope="col">Apellido</th>
 					<th scope="col">Cédula</th>
+					<th scope="col">Docs</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for student in students %}
 					<tr>
-						<th scope="row">{{ student.id }}</th>
 						<td>{{ student.firstName }}</td>
 						<td>{{ student.lastName }}</td>
 						<td>{{ student.identificationNumber }}</td>
+						<td><a href="{{ path('app_document_show', {'id': student.id}) }}" class="btn btn-success">Ver</a></td>
 					</tr>
 				{% endfor %}
 			</tbody>
