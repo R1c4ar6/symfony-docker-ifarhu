@@ -13,13 +13,17 @@
 	{{ parent() }}
 
 	<h1 class="mt-5 mb-3 fw-bold text-uppercase text-center">Lista de estudiantes</h1>
+	<a href="{{ path('app_student_new') }}">Agregar estudiante</a>
 
 	<table class="table table-hover table-striped text-center">
 		<thead>
 			<tr>
-				<th>Número de identificación</th>
-				<th>Nombre</th>
-				<th>Apellido</th>
+				<th>
+					{{ knp_pagination_sortable(pagination, 'Número de identificación', 's.identificationNumber') }}</th>
+				<th>
+					{{ knp_pagination_sortable(pagination, 'Nombre', 's.firstName') }}</th>
+				<th>
+					{{ knp_pagination_sortable(pagination, 'Apellido', 's.lastName') }}</th>
 				<th>Acciones</th>
 			</tr>
 		</thead>
@@ -30,8 +34,8 @@
 					<td>{{ student.firstName }}</td>
 					<td>{{ student.lastName }}</td>
 					<td>
-						<a href="{{ path('app_student_show', {'id': student.id}) }}" class="btn btn-sm btn-success">show</a>
-						<a class="btn btn-sm btn-warning" href="{{ path('app_student_edit', {'id': student.id}) }}">edit</a>
+						<a href="{{ path('app_student_show', {'id': student.id}) }}" class="btn btn-sm btn-success">Ver documentos</a>
+						<a class="btn btn-sm btn-warning" href="{{ path('app_student_edit', {'id': student.id}) }}">Editar datos</a>
 					</td>
 				</tr>
 			{% else %}
@@ -42,9 +46,8 @@
 		</tbody>
 	</table>
 
-	<div class="d-flex justify-content-center">
+	<div class="d-flex justify-content-center navigation">
 		{{ knp_pagination_render(pagination) }}
 	</div>
 
-	<a href="{{ path('app_student_new') }}">Agregar estudiante</a>
 {% endblock %}

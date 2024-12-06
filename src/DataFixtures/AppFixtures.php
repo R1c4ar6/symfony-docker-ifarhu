@@ -17,7 +17,7 @@ class AppFixtures extends Fixture
         $faker = Factory::create();
 
         // Create 10 students
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 55; $i++) {
             $student = new Student();
             $student->setIdentificationNumber($faker->unique()->numerify('ID########'));
             $student->setFirstName($faker->firstName());
