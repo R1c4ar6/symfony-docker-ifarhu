@@ -30,7 +30,7 @@ class AppFixtures extends Fixture
                 $document = new Document();
                 $document->setStudent($student);
                 $document->setStudentNumber($student->getIdentificationNumber());
-                $document->setPdfPath($faker->filePath());
+                $document->setPdfFile($faker->filePath());
 
                 $manager->persist($document);
             }

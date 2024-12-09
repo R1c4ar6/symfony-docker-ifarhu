@@ -21,7 +21,7 @@ class Document
     private ?string $studentNumber = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $pdfPath = null;
+    private ?string $pdfFile = null;
 
     public function getId(): ?int
     {
@@ -52,14 +52,14 @@ class Document
         return $this;
     }
 
-    public function getPdfPath(): ?string
+    public function getPdfFile(): ?string
     {
-        return $this->pdfPath;
+        return $this->pdfFile;
     }
 
-    public function setPdfPath(string $pdfPath): static
+    public function setPdfFile(string $pdfFile): static
     {
-        $this->pdfPath = $pdfPath;
+        $this->pdfPath = $pdfFile;
 
         return $this;
     }
