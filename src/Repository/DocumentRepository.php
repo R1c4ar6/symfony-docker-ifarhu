@@ -16,17 +16,25 @@ class DocumentRepository extends ServiceEntityRepository
         parent::__construct($registry, Document::class);
     }
 
-    public function findByStudent($student): array
+   
+    /**
+     * Finds all documents for a given student
+     *
+     * @param int $id The student ID
+     *
+     * @return array An array of Document objects
+     */
+    public function findByStudentId(int $id): array
     {
         return $this->createQueryBuilder('d')
-            ->andWhere('d.student = :student')
-            ->setParameter('student', $student)
+            ->where('d.student = :id')
+            ->setParameter('id', $id)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
-//    /**
+
+    //    /**
 //     * @return Document[] Returns an array of Document objects
 //     */
 //    public function findByExampleField($value): array
@@ -41,7 +49,7 @@ class DocumentRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Document
+    //    public function findOneBySomeField($value): ?Document
 //    {
 //        return $this->createQueryBuilder('d')
 //            ->andWhere('d.exampleField = :val')

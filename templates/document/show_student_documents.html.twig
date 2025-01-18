@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block head %}
+	{{ parent() }}
+{% endblock %}
+
+{% block title %}Vista de documentos
+{% endblock %}
+
+{% block body %}
+	{{ parent() }}
+	<h1>Documentos del estudiante con ID:
+		{{ app.request.attributes.get('id') }}</h1>
+
+	{% if documents is not empty %}
+		<ul>
+			{% for document in documents %}
+				<li>
+					Document ID:
+					{{ document.getId() }}<br>
+					PDF File:
+					<a href="{{ document.getPdfFile() }}" target="_blank"></a>
+				</li>
+			{% endfor %}
+		</ul>
+	{% else %}
+		<p>Este estudiante no tiene documentos.</p>
+	{% endif %}
+
+	<a href="{{ path('app_document_index') }}">back to list</a>
+
+	{# <a href="{{ path('app_document_edit', {'id': document.id}) }}">edit</a> #}
+
+	{# {{ include('document/_delete_form.html.twig') }} #}
+{% endblock %}

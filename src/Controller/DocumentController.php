@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Document;
+use App\Entity\Student;
 use App\Form\DocumentType;
 use App\Repository\DocumentRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -69,11 +70,13 @@ final class DocumentController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_document_show', methods: ['GET'])]
-    public function show(Document $document): Response
+    #[Route('/{id}', name: 'app_student_documents_show', methods: ['GET'])]
+    public function showStudentDocuments(int $id, DocumentRepository $documentRepository): Response
     {
-        return $this->render('document/show.html.twig', [
-            'document' => $document,
+        $docs = $documentRepository->findByStudentId($id);
+
+        return $this->render('document/show_student_documents.html.twig', [
+            'documents' => $docs,
         ]);
     }
 

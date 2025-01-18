@@ -34,7 +34,7 @@
 					<td>{{ student.firstName }}</td>
 					<td>{{ student.lastName }}</td>
 					<td>
-						<a href="{{ path('app_student_show', {'id': student.id}) }}" class="btn btn-sm btn-success">Ver documentos</a>
+						<a href="{{ path('app_student_documents_show', {'id': student.id}) }}" class="btn btn-sm btn-success" target="_blank">Ver documentos</a>
 						<a class="btn btn-sm btn-warning" href="{{ path('app_student_edit', {'id': student.id}) }}">Editar datos</a>
 					</td>
 				</tr>
