@@ -13,7 +13,9 @@
 	{{ parent() }}
 
 	<h1 class="mt-5 mb-3 fw-bold text-uppercase text-center">Lista de estudiantes</h1>
-	<a href="{{ path('app_student_new') }}">Agregar estudiante</a>
+	<div>
+		<a href="{{ path('app_student_new') }} " class="btn btn-success">Agregar estudiante</a>
+	</div>
 
 	<table class="table table-hover table-striped text-center">
 		<thead>

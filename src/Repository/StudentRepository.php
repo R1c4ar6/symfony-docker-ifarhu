@@ -16,6 +16,18 @@ class StudentRepository extends ServiceEntityRepository
         parent::__construct($registry, Student::class);
     }
 
+    public function getStudentById($id): ?Student
+    {
+        return $this->find($id);
+    }
+    public function getFullName($id): string
+    {
+        $student = $this->getStudentById($id);
+        $fullName = $student->getFirstName() . ' ' . $student->getLastName();
+
+        return $fullName;
+    }
+
     //    /**
     //     * @return Student[] Returns an array of Student objects
     //     */

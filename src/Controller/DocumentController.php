@@ -6,6 +6,7 @@ use App\Entity\Document;
 use App\Entity\Student;
 use App\Form\DocumentType;
 use App\Repository\DocumentRepository;
+use App\Repository\StudentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -33,7 +34,7 @@ final class DocumentController extends AbstractController
         Request $request,
         SluggerInterface $slugger,
         EntityManagerInterface $entityManager,
-        #[Autowire('%kernel.project_dir%/data/uploads')] string $pdfDirectory
+        #[Autowire('%kernel.project_dir%/var/uploads')] string $pdfDirectory
     ): Response {
         $document = new Document();
         $form = $this->createForm(DocumentType::class, $document);
@@ -44,6 +45,10 @@ final class DocumentController extends AbstractController
             $pdfFile = $form->get('pdfFile')->getData();
 
             if ($pdfFile) {
+                if (!file_exists($pdfDirectory)) {
+                    mkdir($pdfDirectory, 0777, true);
+                }
+
                 $originalFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . uniqid() . '.' . $pdfFile->guessExtension();
@@ -54,13 +59,15 @@ final class DocumentController extends AbstractController
                         $newFilename
                     );
                 } catch (FileException $e) {
-                    throw new \Exception('Unable to upload PDF file.');
+                    $this->addFlash('error', 'Unable to upload PDF file.');
+                    return $this->redirectToRoute('app_document_new');
                 }
                 $document->setPdfFile($newFilename);
             }
             $entityManager->persist($document);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Document uploaded successfully.');
             return $this->redirectToRoute('app_document_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -71,12 +78,14 @@ final class DocumentController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_student_documents_show', methods: ['GET'])]
-    public function showStudentDocuments(int $id, DocumentRepository $documentRepository): Response
+    public function showStudentDocuments(int $id, DocumentRepository $documentRepository, StudentRepository $studentRepository): Response
     {
         $docs = $documentRepository->findByStudentId($id);
+        $student = $studentRepository->getFullName($id);
 
         return $this->render('document/show_student_documents.html.twig', [
             'documents' => $docs,
+            'student_name' => $student
         ]);
     }
 

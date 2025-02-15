@@ -9,8 +9,11 @@
 
 {% block body %}
 	{{ parent() }}
-	<h1>Documentos del estudiante con ID:
-		{{ app.request.attributes.get('id') }}</h1>
+	<h1>Documentos de {{ student_name }}</h1>
+
+	<div>
+		<a href="{{ path('app_document_new') }} " class="btn btn-success">Agregar documento</a>
+	</div>
 
 	{% if documents is not empty %}
 		<ul>
@@ -19,7 +22,7 @@
 					Document ID:
 					{{ document.getId() }}<br>
 					PDF File:
-					<a href="{{ document.getPdfFile() }}" target="_blank"></a>
+					<a href="{{ doc}}" taument.getPdfFile() rget="_blank"></a>
 				</li>
 			{% endfor %}
 		</ul>
@@ -27,7 +30,7 @@
 		<p>Este estudiante no tiene documentos.</p>
 	{% endif %}
 
-	<a href="{{ path('app_document_index') }}">back to list</a>
+	<a href="{{ path('app_student_index') }}">back to list</a>
 
 	{# <a href="{{ path('app_document_edit', {'id': document.id}) }}">edit</a> #}
 

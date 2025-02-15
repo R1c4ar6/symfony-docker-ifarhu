@@ -22,7 +22,7 @@ class DocumentType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new File([
-                        'maxSize' => '1024k',
+                        'maxSize' => '5120k', // 5MB
                         'mimeTypes' => [
                             'application/pdf',
                             'application/x-pdf',
@@ -34,9 +34,7 @@ class DocumentType extends AbstractType
             ->add('student', EntityType::class, [
                 'class' => Student::class,
                 'choice_label' => 'identificationNumber . \' - \' . firstName . \' \' . lastName',
-                
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
