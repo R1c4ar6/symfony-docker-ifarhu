@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Document{% endblock %}
+{% block title %}New Document
+{% endblock %}
 
 {% block body %}
-    <h1>Create new Document</h1>
+	{{ parent() }}
+	<h1>Create new Document</h1>
 
-    {{ include('document/_form.html.twig') }}
+	{{ include('document/_form.html.twig') }}
 
-    <a href="{{ path('app_student_documents_show') }}">back to list</a>
+	<a href="{{ path('app_student_documents_show', {'id': student_id}) }}">volver a los documentos</a>
 {% endblock %}

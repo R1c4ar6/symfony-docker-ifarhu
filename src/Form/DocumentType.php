@@ -3,8 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Document;
-use App\Entity\Student;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,7 +17,7 @@ class DocumentType extends AbstractType
             ->add('pdfFile', FileType::class, [
                 'label' => 'PDF File',
                 'mapped' => false,
-                'required' => false,
+                'required' => true,
                 'constraints' => [
                     new File([
                         'maxSize' => '5120k', // 5MB
@@ -30,10 +28,6 @@ class DocumentType extends AbstractType
                         'mimeTypesMessage' => 'Please upload a valid PDF document',
                     ])
                 ],
-            ])
-            ->add('student', EntityType::class, [
-                'class' => Student::class,
-                'choice_label' => 'identificationNumber . \' - \' . firstName . \' \' . lastName',
             ]);
     }
 

@@ -16,7 +16,7 @@ class DocumentRepository extends ServiceEntityRepository
         parent::__construct($registry, Document::class);
     }
 
-   
+
     /**
      * Finds all documents for a given student
      *
@@ -30,7 +30,30 @@ class DocumentRepository extends ServiceEntityRepository
             ->where('d.student = :id')
             ->setParameter('id', $id)
             ->getQuery()
-            ->getResult();
+            ->getArrayResult();
+    }
+    /**
+     * Retrieves a simplified array of documents for a given student.
+     *
+     * Each document is represented as an associative array containing
+     * selected fields such as 'id' and 'name'.
+     *
+     * @param int $id The student ID
+     *
+     * @return array An array of associative arrays representing simplified documents
+     */
+
+    public function findByStudentIdSimplified(int $id): array
+    {
+        $result = $this->findByStudentId($id);
+        $simplified = array_map(function ($item) {
+            return [
+                'id' => $item->getId(),
+                'name' => $item->getName(),
+                // Add other fields as needed
+            ];
+        }, $result);
+        return $simplified;
     }
 
 

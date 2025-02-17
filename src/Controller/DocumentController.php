@@ -29,22 +29,34 @@ final class DocumentController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_document_new', methods: ['GET', 'POST'])]
+    #[Route('/new/{studentId}', name: 'app_document_new', methods: ['GET', 'POST'])]
     public function new(
         Request $request,
         SluggerInterface $slugger,
         EntityManagerInterface $entityManager,
-        #[Autowire('%kernel.project_dir%/var/uploads')] string $pdfDirectory
+        #[Autowire('%kernel.project_dir%/var/uploads')] string $pdfDirectory,
+        StudentRepository $studentRepository,
+        int $studentId // Student ID from the route
     ): Response {
+        // Fetch the student entity
+        $student = $studentRepository->find($studentId);
+
+        if (!$student) {
+            throw $this->createNotFoundException('Student not found.');
+        }
+
+        // Create the document and associate it with the student
         $document = new Document();
+        $document->setStudent($student); // Associate the student with the document
+
         $form = $this->createForm(DocumentType::class, $document);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $pdfFile = $form->get('pdfFile')->getData();
 
             if ($pdfFile) {
+                // Ensure the upload directory exists
                 if (!file_exists($pdfDirectory)) {
                     mkdir($pdfDirectory, 0777, true);
                 }
@@ -60,10 +72,14 @@ final class DocumentController extends AbstractController
                     );
                 } catch (FileException $e) {
                     $this->addFlash('error', 'Unable to upload PDF file.');
-                    return $this->redirectToRoute('app_document_new');
+                    return $this->redirectToRoute('app_document_new', ['studentId' => $studentId]);
                 }
+
+                // Set the PDF file name in the document entity
                 $document->setPdfFile($newFilename);
             }
+
+            // Persist the document
             $entityManager->persist($document);
             $entityManager->flush();
 
@@ -74,6 +90,7 @@ final class DocumentController extends AbstractController
         return $this->render('document/new.html.twig', [
             'document' => $document,
             'form' => $form,
+            'student_id' => $studentId
         ]);
     }
 
@@ -81,11 +98,13 @@ final class DocumentController extends AbstractController
     public function showStudentDocuments(int $id, DocumentRepository $documentRepository, StudentRepository $studentRepository): Response
     {
         $docs = $documentRepository->findByStudentId($id);
+        // dd($docs);
         $student = $studentRepository->getFullName($id);
 
         return $this->render('document/show_student_documents.html.twig', [
             'documents' => $docs,
-            'student_name' => $student
+            'student_name' => $student,
+            'student_id' => $id
         ]);
     }
 

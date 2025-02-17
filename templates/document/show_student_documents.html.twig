@@ -9,10 +9,11 @@
 
 {% block body %}
 	{{ parent() }}
-	<h1>Documentos de {{ student_name }}</h1>
+	<h1>Documentos de
+		{{ student_name }}</h1>
 
 	<div>
-		<a href="{{ path('app_document_new') }} " class="btn btn-success">Agregar documento</a>
+		<a href="{{ path('app_document_new', {'studentId': student_id}) }} " class="btn btn-success">Agregar documento</a>
 	</div>
 
 	{% if documents is not empty %}
@@ -20,9 +21,9 @@
 			{% for document in documents %}
 				<li>
 					Document ID:
-					{{ document.getId() }}<br>
+					{{ document.id }}<br>
 					PDF File:
-					<a href="{{ doc}}" taument.getPdfFile() rget="_blank"></a>
+					<a href="{{ document.pdfFile}}" target="_blank"></a>
 				</li>
 			{% endfor %}
 		</ul>

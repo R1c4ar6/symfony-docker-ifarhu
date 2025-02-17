@@ -35,6 +35,36 @@ class Student
         $this->documents = new ArrayCollection();
     }
 
+    /**
+     * @return Collection<int, Document>
+     */
+    public function getDocuments(): Collection
+    {
+        return $this->documents;
+    }
+
+    public function addDocument(Document $document): static
+    {
+        if (!$this->documents->contains($document)) {
+            $this->documents->add($document);
+            $document->setStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocument(Document $document): static
+    {
+        if ($this->documents->removeElement($document)) {
+            // set the owning side to null (unless already changed)
+            if ($document->getStudent() === $this) {
+                $document->setStudent(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function insertStudent($name, $lastName, $identification): void
     {
         $this->identificationNumber = $identification;
@@ -97,33 +127,4 @@ class Student
         return $this;
     }
 
-    /**
-     * @return Collection<int, Document>
-     */
-    public function getDocuments(): Collection
-    {
-        return $this->documents;
-    }
-
-    public function addDocument(Document $document): static
-    {
-        if (!$this->documents->contains($document)) {
-            $this->documents->add($document);
-            $document->setStudent($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDocument(Document $document): static
-    {
-        if ($this->documents->removeElement($document)) {
-            // set the owning side to null (unless already changed)
-            if ($document->getStudent() === $this) {
-                $document->setStudent(null);
-            }
-        }
-
-        return $this;
-    }
 }
