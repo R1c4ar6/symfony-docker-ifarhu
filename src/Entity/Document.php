@@ -59,7 +59,7 @@ class Document
 
     public function setPdfFile(string $pdfFile): static
     {
-        $this->pdfPath = $pdfFile;
+        $this->pdfFile = $pdfFile;
 
         return $this;
     }

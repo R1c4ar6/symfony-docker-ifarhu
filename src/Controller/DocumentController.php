@@ -75,11 +75,14 @@ final class DocumentController extends AbstractController
                     return $this->redirectToRoute('app_document_new', ['studentId' => $studentId]);
                 }
 
+                // dd($newFilename,$pdfFile);
                 // Set the PDF file name in the document entity
                 $document->setPdfFile($newFilename);
+                $document->setStudentNumber($student->getIdentificationNumber());
+
+                // dd($document);
             }
 
-            // Persist the document
             $entityManager->persist($document);
             $entityManager->flush();
 
