@@ -16,6 +16,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 
 #[Route('/document')]
@@ -63,7 +65,7 @@ final class DocumentController extends AbstractController
 
                 $originalFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $pdfFile->guessExtension();
+                $newFilename = date('Y-m-d') . '_' . $safeFilename . '_' . uniqid() . '.' . $pdfFile->guessExtension();
 
                 try {
                     $pdfFile->move(
@@ -87,7 +89,7 @@ final class DocumentController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Document uploaded successfully.');
-            return $this->redirectToRoute('app_document_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_student_documents_show', ['id' => $studentId], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('document/new.html.twig', [
@@ -97,9 +99,33 @@ final class DocumentController extends AbstractController
         ]);
     }
 
+    #[Route('/download-document/{filename}', name: 'app_document_download', methods: ['GET'])]
+    public function downloadDocument(
+        string $filename,
+        #[Autowire('%kernel.project_dir%/var/uploads')] string $pdfDirectory
+    ): Response {
+        // Construct the full path to the file
+        $filePath = $pdfDirectory . '/' . $filename;
+
+        // Check if the file exists
+        if (!file_exists($filePath)) {
+            throw $this->createNotFoundException('The file does not exist.');
+        }
+
+        // Create a response to stream the file
+        $response = new BinaryFileResponse($filePath);
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $filename); // Open in the browser
+        $response->headers->set('Content-Type', 'application/pdf');
+
+        return $response;
+    }
+
     #[Route('/{id}', name: 'app_student_documents_show', methods: ['GET'])]
-    public function showStudentDocuments(int $id, DocumentRepository $documentRepository, StudentRepository $studentRepository): Response
-    {
+    public function showStudentDocuments(
+        int $id,
+        DocumentRepository $documentRepository,
+        StudentRepository $studentRepository
+    ): Response {
         $docs = $documentRepository->findByStudentId($id);
         // dd($docs);
         $student = $studentRepository->getFullName($id);

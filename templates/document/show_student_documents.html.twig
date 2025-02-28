@@ -20,10 +20,10 @@
 		<ul>
 			{% for document in documents %}
 				<li>
-					Document ID:
+					Número de documento:
 					{{ document.id }}<br>
 					PDF File:
-					<a href="{{ document.pdfFile}}" target="_blank"></a>
+					<a href="{{ path('app_document_download', {'filename': document.pdfFile}) }}" target="_blank">Ver PDF</a>
 				</li>
 			{% endfor %}
 		</ul>
@@ -31,7 +31,7 @@
 		<p>Este estudiante no tiene documentos.</p>
 	{% endif %}
 
-	<a href="{{ path('app_student_index') }}">back to list</a>
+	<a href="{{ path('app_student_index') }}">Volver a la lista</a>
 
 	{# <a href="{{ path('app_document_edit', {'id': document.id}) }}">edit</a> #}
 

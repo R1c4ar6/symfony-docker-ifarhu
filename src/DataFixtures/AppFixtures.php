@@ -16,10 +16,10 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create();
 
-        // Create 10 students
-        for ($i = 0; $i < 55; $i++) {
+        // Create 40 students
+        for ($i = 0; $i < 40; $i++) {
             $student = new Student();
-            $student->setIdentificationNumber($faker->unique()->numerify('ID########'));
+            $student->setIdentificationNumber($faker->unique()->numerify('#-###-####'));
             $student->setFirstName($faker->firstName());
             $student->setLastName($faker->lastName());
 
@@ -30,7 +30,8 @@ class AppFixtures extends Fixture
                 $document = new Document();
                 $document->setStudent($student);
                 $document->setStudentNumber($student->getIdentificationNumber());
-                $document->setPdfFile($faker->filePath());
+                $pdfFileName = $this->generateFakePdfFileName($faker);
+                $document->setPdfFile($pdfFileName);
 
                 $manager->persist($document);
             }
@@ -38,5 +39,11 @@ class AppFixtures extends Fixture
 
         // Flush all data to the database
         $manager->flush();
+    }
+
+    private function generateFakePdfFileName(\Faker\Generator $faker): string
+    {
+        $fileName = 'student-report-' . $faker->date('Y-m-d') . '.pdf';
+        return $fileName;
     }
 }
