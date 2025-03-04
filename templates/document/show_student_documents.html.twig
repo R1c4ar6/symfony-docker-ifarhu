@@ -22,6 +22,8 @@
 				<li>
 					Número de documento:
 					{{ document.id }}<br>
+					Nombre del documento:
+					{{ document.pdfFile }}<br>
 					PDF File:
 					<a href="{{ path('app_document_download', {'filename': document.pdfFile}) }}" target="_blank">Ver PDF</a>
 				</li>
