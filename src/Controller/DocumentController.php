@@ -36,7 +36,7 @@ final class DocumentController extends AbstractController
         Request $request,
         SluggerInterface $slugger,
         EntityManagerInterface $entityManager,
-        #[Autowire('%kernel.project_dir%/var/uploads')] string $pdfDirectory,
+        #[Autowire('%pdf_directory%')] string $pdfDirectory,
         StudentRepository $studentRepository,
         int $studentId // Student ID from the route
     ): Response {
@@ -65,24 +65,23 @@ final class DocumentController extends AbstractController
 
                 $originalFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = date('Y-m-d') . '_' . $safeFilename . '_' . uniqid() . '.' . $pdfFile->guessExtension();
+                $newFilename = $safeFilename . '_' . uniqid() . '.' . $pdfFile->guessExtension();
+                $pdfFile->move($pdfDirectory, $newFilename);
 
-                try {
-                    $pdfFile->move(
-                        $pdfDirectory,
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    $this->addFlash('error', 'Unable to upload PDF file.');
-                    return $this->redirectToRoute('app_document_new', ['studentId' => $studentId]);
-                }
+                // try {
+                //     $pdfFile->move(
+                //         $pdfDirectory,
+                //         $newFilename
+                //     );
+                // } catch (FileException $e) {
+                //     $this->addFlash('error', 'Unable to upload PDF file.');
+                //     return $this->redirectToRoute('app_document_new', ['studentId' => $studentId]);
+                // }
 
                 // dd($newFilename,$pdfFile);
                 // Set the PDF file name in the document entity
                 $document->setPdfFile($newFilename);
                 $document->setStudentNumber($student->getIdentificationNumber());
-
-                // dd($document);
             }
 
             $entityManager->persist($document);
@@ -102,7 +101,7 @@ final class DocumentController extends AbstractController
     #[Route('/download-document/{filename}', name: 'app_document_download', methods: ['GET'])]
     public function downloadDocument(
         string $filename,
-        #[Autowire('%kernel.project_dir%/var/uploads')] string $pdfDirectory
+        #[Autowire('%pdf_directory%')] string $pdfDirectory
     ): Response {
         // Construct the full path to the file
         $filePath = $pdfDirectory . '/' . $filename;

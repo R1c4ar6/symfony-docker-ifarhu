@@ -5,9 +5,9 @@ build:
 	docker compose build --pull --no-cache
 	docker compose up -d
 
-.PHONY: stop
-stop:
-	docker compose stop
+.PHONY: up
+up:
+	docker compose up -d
 
 .PHONY: down
 down:

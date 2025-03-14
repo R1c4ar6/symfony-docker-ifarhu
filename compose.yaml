@@ -18,7 +18,7 @@ services:
     volumes:
       - caddy_data:/data
       - caddy_config:/config
-      - uploads:/var/www/html/var/uploads 
+      - ./var/uploads:/var/www/html/var/uploads
     ports:
       # HTTP
       - target: 80
@@ -60,4 +60,3 @@ volumes:
   caddy_data:
   caddy_config:
   database_data:
-  uploads:
