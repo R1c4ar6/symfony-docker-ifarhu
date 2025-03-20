@@ -66,20 +66,18 @@ final class DocumentController extends AbstractController
                 $originalFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '_' . uniqid() . '.' . $pdfFile->guessExtension();
-                $pdfFile->move($pdfDirectory, $newFilename);
+                // $pdfFile->move($pdfDirectory, $newFilename);
 
-                // try {
-                //     $pdfFile->move(
-                //         $pdfDirectory,
-                //         $newFilename
-                //     );
-                // } catch (FileException $e) {
-                //     $this->addFlash('error', 'Unable to upload PDF file.');
-                //     return $this->redirectToRoute('app_document_new', ['studentId' => $studentId]);
-                // }
+                try {
+                    $pdfFile->move(
+                        $pdfDirectory,
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'Unable to upload PDF file.');
+                    return $this->redirectToRoute('app_document_new', ['studentId' => $studentId]);
+                }
 
-                // dd($newFilename,$pdfFile);
-                // Set the PDF file name in the document entity
                 $document->setPdfFile($newFilename);
                 $document->setStudentNumber($student->getIdentificationNumber());
             }
@@ -162,6 +160,6 @@ final class DocumentController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_document_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_student_documents_show', ['id' => $document->getStudent()->getId()], Response::HTTP_SEE_OTHER);
     }
 }
