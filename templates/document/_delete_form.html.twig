@@ -1,31 +1,33 @@
-{% extends 'base.html.twig' %}
 
-{% block head %}
-	{{ parent() }}
-{% endblock %}
-
-{% block title %}Confirmar Eliminación{% endblock %}
-
-{% block body %}
-<div class="container py-5">
-    <div class="card shadow-sm mx-auto" style="max-width: 500px;">
-        <div class="card-body text-center p-4">
-            <div class="mb-4">
-                <i class="fas fa-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
-            </div>
-            <h5 class="card-title mb-3">¿Estás seguro de eliminar este documento?</h5>
-            <p class="card-text text-muted mb-4">Esta acción no se puede deshacer.</p>
-            
-            <form method="post" action="{{ path('app_document_delete', {'id': document.id}) }}" class="d-flex justify-content-center gap-2">
-                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ document.id) }}">
-                <a href="#" onclick="window.close();" class="btn btn-secondary">
-                    <i class="fas fa-times"></i> Cancelar
-                </a>
-                <button type="submit" class="btn btn-danger">
-                    <i class="fas fa-trash"></i> Eliminar
-                </button>
-            </form>
-        </div>
-    </div>
+{% block modal %}
+<div class="modal fade" id="deleteModal{{ document.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ document.id }}" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="deleteModalLabel{{ document.id }}">Eliminar Documento</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body text-center">
+				<div class="mb-4">
+					<i class="fas fa-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
+				</div>
+				<h5 class="card-title mb-3">¿Estás seguro de eliminar el documento #{{ document.id }}?</h5>
+				<p class="text-muted mb-4">Esta acción no se puede deshacer.</p>
+			</div>
+			<div class="modal-footer d-flex justify-content-center gap-2">
+				<form method="post" action="{{ path('app_document_delete', {'id': document.id}) }}" class="d-flex justify-content-center gap-2">
+					<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ document.id) }}">
+					<a href="#" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">
+						<i class="fas fa-times"></i>
+						Cancelar
+					</a>
+					<button type="submit" class="btn btn-danger" aria-label="Eliminar documento">
+						<i class="fas fa-trash"></i>
+						Eliminar
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
 {% endblock %}

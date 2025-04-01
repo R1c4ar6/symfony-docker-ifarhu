@@ -36,12 +36,13 @@
 									<i class="fas fa-file-pdf"></i>
 									Ver PDF
 								</a>
-								<a href="{{ path('app_document_delete_preview', {'id': document.id}) }}" class="btn btn-danger btn-sm" target="_blank" rel="noopener noreferrer">
+								<button type="button" data-bs-toggle="modal" data-bs-target="#deleteModal{{ document.id }}" class="btn btn-danger btn-sm" aria-label="Eliminar documento">
 									<i class="fas fa-trash"></i>
 									Eliminar
-								</a>
+								</button>
 							</td>
 						</tr>
+						{% include 'document/_delete_form.html.twig' %} {# modal from templates #}
 					{% endfor %}
 				</tbody>
 			</table>
