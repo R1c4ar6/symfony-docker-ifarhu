@@ -46,7 +46,7 @@ final class DocumentController extends AbstractController
         if (!$student) {
             throw $this->createNotFoundException('Student not found.');
         }
-
+        // phpinfo();
         // Create the document and associate it with the student
         $document = new Document();
         $document->setStudent($student); // Associate the student with the document
@@ -66,7 +66,6 @@ final class DocumentController extends AbstractController
                 $originalFilename = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '_' . uniqid() . '.' . $pdfFile->guessExtension();
-                // $pdfFile->move($pdfDirectory, $newFilename);
 
                 try {
                     $pdfFile->move(
@@ -151,18 +150,20 @@ final class DocumentController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/preview', name: 'app_document_delete_preview', methods: ['GET'])]
-    public function deletePreview(Request $request, Document $document): Response
-    {
-        return $this->render('document/_delete_form.html.twig', [
-            'document' => $document,
-        ]);
-    }
-
     #[Route('/{id}/delete', name: 'app_document_delete', methods: ['POST'])]
-    public function delete(Request $request, Document $document, EntityManagerInterface $entityManager): Response
-    {
+    public function delete(
+        Request $request,
+        Document $document,
+        EntityManagerInterface $entityManager,
+        #[Autowire('%pdf_directory%')] string $pdfDirectory
+    ): Response {
         if ($this->isCsrfTokenValid('delete' . $document->getId(), $request->getPayload()->getString('_token'))) {
+
+            $filePath = $pdfDirectory . '/' . $document->getPdfFile();
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+
             $entityManager->remove($document);
             $entityManager->flush();
         }

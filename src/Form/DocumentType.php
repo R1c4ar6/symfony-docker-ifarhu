@@ -25,7 +25,7 @@ class DocumentType extends AbstractType
                             'application/pdf',
                             'application/x-pdf',
                         ],
-                        'mimeTypesMessage' => 'Please upload a valid PDF document',
+                        'mimeTypesMessage' => 'Por favor sube un archivo PDF válido',
                     ])
                 ],
             ]);
