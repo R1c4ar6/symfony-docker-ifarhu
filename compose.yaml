@@ -19,6 +19,7 @@ services:
       - caddy_data:/data
       - caddy_config:/config
       - ./var/uploads:/var/www/html/var/uploads
+      - ./frankenphp/conf.d/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
     ports:
       # HTTP
       - target: 80
