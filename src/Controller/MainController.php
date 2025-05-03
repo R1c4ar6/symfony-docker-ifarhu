@@ -8,14 +8,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
 {
-    #[Route('/login', name: 'app_main_index')]
-    public function index(StudentRepository $studentRepository): Response
+    #[Route('/', name: 'app_home')]
+    public function index(): Response
     {
-        $studentList = $studentRepository->findAllStudents();
-
-        return $this->render('main/index.html.twig', [
-            'controller_name' => 'StudentsController',
-            'students' => $studentList,
-        ]);
+        return $this->redirectToRoute('app_student_index');
     }
 }
