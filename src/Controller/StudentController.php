@@ -41,8 +41,19 @@ final class StudentController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($student);
-            $entityManager->flush();
+            $studentFirstName= $form->get('firstName')->getData();
+            $studentLastName= $form->get('lastName')->getData();
+            $studentIdentificationNumber= $form->get('identificationNumber')->getData();
+
+            //VERIFY THAT THE USER IS NOT INPUTING WRONG DATA (lots of regex for spanish names)
+            if(preg_match('/^[A-ZÁÉÍÓÚÑÜ][a-zA-ZáéíóúñÁÉÍÓÚÑü ]*$/', $studentFirstName) && preg_match('/^[A-ZÁÉÍÓÚÑÜ][a-zA-ZáéíóúñÁÉÍÓÚÑü ]*$/', $studentLastName) && preg_match('/^\d-\d{3}-\d{3,4}$/', $studentIdentificationNumber)){
+        
+                $entityManager->persist($student);
+                $entityManager->flush();
+
+            }else{
+                return $this->redirectToRoute('app_student_new', [], Response::HTTP_SEE_OTHER);
+            }
 
             return $this->redirectToRoute('app_student_index', [], Response::HTTP_SEE_OTHER);
         }
