@@ -15,6 +15,7 @@ class StudentType extends AbstractType
         $builder
             ->add('identificationNumber', null, [
                 'label' => 'Número de identificación',
+                'attr' => ['placeholder' => '7-123-4567'],
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Regex([
@@ -25,6 +26,7 @@ class StudentType extends AbstractType
             ])
             ->add('firstName', null, [
                 'label' => 'Nombre',
+                'attr' => ['placeholder' => 'Juan'],
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Regex([
@@ -35,6 +37,7 @@ class StudentType extends AbstractType
             ])
             ->add('lastName', null, [
                 'label' => 'Apellido',
+                'attr' => ['placeholder' => 'Rodríguez'],
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Regex([

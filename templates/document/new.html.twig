@@ -5,13 +5,19 @@
 
 {% block body %}
 	{{ parent() }}
-	<div class="container">
-		<div class="row align-content-center">
-			<h1 class="text-center">Nuevo documento</h1>
-
-			{{ include('document/_form.html.twig') }}
-
-			<a class="mt-3" href="{{ path('app_student_documents_show', {'id': student_id}) }}">Volver a los documentos</a>
+	<div class="container py-5">
+	  <div class="row justify-content-center">
+		<div class="col-md-10">
+		  <h1 class="text-center mb-4">Nuevo documento</h1>
+		  <div class="card">
+			<div class="card-body">
+			  {{ include('document/_form.html.twig') }}
+			</div>
+			<div class="card-footer text-center">
+			  <a class="btn btn-secondary" href="{{ path('app_student_documents_show', {'id': student_id}) }}">Volver a los documentos</a>
+			</div>
+		  </div>
 		</div>
+	  </div>
 	</div>
 {% endblock %}

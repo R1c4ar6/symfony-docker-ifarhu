@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Document;
-use App\Entity\Student;
 use App\Form\DocumentType;
 use App\Repository\DocumentRepository;
 use App\Repository\StudentRepository;
@@ -14,7 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -40,7 +38,6 @@ final class DocumentController extends AbstractController
         StudentRepository $studentRepository,
         int $studentId // Student ID from the route
     ): Response {
-        // Fetch the student entity
         $student = $studentRepository->find($studentId);
 
         if (!$student) {
@@ -100,7 +97,6 @@ final class DocumentController extends AbstractController
         string $filename,
         #[Autowire('%pdf_directory%')] string $pdfDirectory
     ): Response {
-        // Construct the full path to the file
         $filePath = $pdfDirectory . '/' . $filename;
 
         // Check if the file exists
